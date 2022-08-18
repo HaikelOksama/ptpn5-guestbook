@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block title %}Guest List{% endblock title %}
+
+{% block content %}
+
+{% if messages %}
+{% for message in messages %}
+    <h5 class="text-success">{{message}}</h5>
+{% endfor %}
+{% endif %}
+
+<div class="container mt-3">
+    <h3 for="search-input">Search by name</h3>
+    <div class="input-group">    
+        <input class="form-control" type="text" name="search" id="search-input" placeholder="Search" hx-target="#data-obj" hx-get="{% url 'home' %}" 
+        hx-trigger="keyup changed delay:200ms" hx-swap="outerHTML">
+    </div>
+
+    {% comment %} <form action="{% url 'home' %}?search={{q}}" method="get"> {% endcomment %}
+    
+    {% comment %} </form> {% endcomment %}
+    <br>
+    <h3>Search by date</h3>
+
+    {% comment %} <form action="{% url 'home' %}?date={{d}}" method="get" id='date-form'> {% endcomment %}
+        <input class="form-control" min="{{min_date}}" type="date" name="date"  id="date" 
+        hx-target="#data-obj" hx-get="{% url 'home' %}" 
+        hx-trigger="input delay:200ms" hx-swap="outerHTML">
+    {% comment %} </form> {% endcomment %}
+
+    <br>
+    <h3>All data from month</h3>
+
+    {% comment %} <form action="{% url 'home' %}?month={{m}}" method="get" id='month-form'> {% endcomment %}
+        <input class="form-control calendar" min="{{min_month}}" type="month" name="month" id="" hx-target="#data-obj" hx-get="{% url 'home' %}" 
+        hx-trigger="input delay:200ms" hx-swap="outerHTML">
+    {% comment %} </form> {% endcomment %}
+    <div class="htmx-indicator">
+        <span>Loading...</span>
+        <div class="spinner-border" role="status">
+        </div>
+    </div>
+
+    {% include 'base/components/guest-table.html' %}
+
+</div>
+
+{% if use_pagination %}
+<ul class="pagination justify-content-center">
+    {% if page_obj.has_previous %}
+    <li class="page_item">
+        <a href="?page=1" class="page-link">&laquo; First</a>
+    </li>
+    <li class="page-item">
+        <a class="page-link" href="?page={{ page_obj.previous_page_number }}" tabindex="-1">Previous</a>
+    </li>
+    {% else %}
+    <li class="page-item disabled">
+        <a class="page-link" href="#" tabindex="-1">Previous</a>
+    </li>
+    {% endif %}
+
+    {% for page in range %}
+        <li class="page-item"><a class="page-link" href="?page={{ forloop.counter }}">{{ forloop.counter }}</a></li>
+    {% endfor %}
+    
+    {% comment %} <li class="page-item"><a class="page-link" href="#">1</a></li>
+    <li class="page-item"><a class="page-link" href="#">2</a></li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li> {% endcomment %}
+    {% if page_obj.has_next %}
+    <li class="page-item">
+      <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+    </li>
+    <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a></li>
+    {% else %}
+    <li class="page-item disabled">
+        <a class="page-link" href="">Next</a>
+      </li>
+    <li class="page-item disabled"><a class="page-link">Last &raquo;</a></li>
+    {% endif %}
+</ul>
+{% endif %}
+    
+
+{% endblock content %}

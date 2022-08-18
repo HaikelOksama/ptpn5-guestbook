@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Monthly{% endblock title %}
+
+{% block content %}
+
+{% comment %} onchange="this.form.submit()" {% endcomment %}
+<div class=" container mt-3">
+    
+    <div class="card mb-3">
+        <div class="card-body">
+        <h4 class="card-title">Data Tamu Bulanan</h4>
+        <form action="" method="get" id='month-form'>
+            <div class="row-cols-md-auto">            
+                {% comment %} <div class="form-group mb-3">
+                    <input class="form-control" type="text" name="" id="" >
+                </div> {% endcomment %}
+                <div class="row justify-content-evenly">
+                    <div class="form-group col-5">
+                        <label class="form-label" for="monthly-input">Cari Data Pada Bulan</label>
+                        <input required value="{{request.GET.month}}" class="form-control col" min="{{min}}" max="{{max}}" 
+                        type="month" name="month" id="monthly-input" 
+                        hx-get="{% url 'monthly-data' %}" hx-trigger="input delay:200ms"
+                        hx-include="#sort" hx-target="#data-obj" hx-swap="innerHTML"
+                        />
+                    </div>
+                    <div class="form-group col-5">
+                        <label class="form-label" for="sort">Sort</label>
+                        <select class="form-control select2-selection__arrow" name="sort" id="sort"
+                        hx-get="{% url 'monthly-data' %}" hx-trigger="input delay:200ms"
+                        hx-include="#monthly-input" hx-target="#data-obj" hx-swap="innerHTML"
+                        >
+                            
+                            {% if request.GET.sort == 'latest' %}
+                                <option value="latest" selected>
+                                    Data Terbaru
+                                </option>
+                            {% else %}
+                                <option value="latest">
+                                    Data Terbaru
+                                </option>
+                            {% endif %}
+
+                            {% if request.GET.sort == 'name' %}
+                                <option selected value="name">Name</option>
+                                {% else %}
+                                <option value="name">Name</option>
+                            {% endif %}
+
+                            {% if request.GET.sort == 'jadwalASC' %}
+                                <option selected value="jadwalASC">Jadwal(Asc)</option>
+                                {% else %}
+                                <option value="jadwalASC">Jadwal(Asc)</option>
+                            {% endif %}
+
+                            {% if request.GET.sort == 'jadwalDESC' %}
+                                <option selected value="jadwalDESC">Jadwal(Desc)</option>
+                                {% else %}
+                                <option value="jadwalDESC">Jadwal(Desc)</option>
+                            {% endif %}
+                        </select>
+                    </div> 
+                    <div class="form-group col-2 mt-auto">
+                        <input class="btn btn-success mt-4 w-100" type="submit" value="Submit">
+                    </div>
+                </div>
+            </div>     
+        </form>
+        </div>
+    </div>
+    <div class="card">
+        {% include 'base/components/guest-table.html' %}
+    </div>
+    
+    
+</div>
+
+{% endblock content %}
