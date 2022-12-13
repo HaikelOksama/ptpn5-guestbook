@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+
+{% block title %}Export Ready{% endblock title %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="card mb-3 card-primary card-outline">
+        <div class="card-header">
+            <h4 >Eksport Data Tamu</h4>
+
+        </div>
+        <div class="card-body">
+            <form action="" method="post" id='month-form'>
+                {% csrf_token %}
+                <div class="row-cols-md-auto">            
+                    {% comment %} <div class="form-group mb-3">
+                        <input class="form-control" type="text" name="" id="" >
+                    </div> {% endcomment %}
+                    <div class="row justify-content-evenly">
+                        <div class="form-group col-5">
+                            <label class="form-label" for="monthly-input">Tahun</label>
+                            <select required class="form-control select2-selection__arrow" name="year" id="sort">
+                                <option disabled selected value> -- Pilih Tahun -- </option> 
+                                {% for year in yearOpt %}
+                                <option value="{{year}}">{{year}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group col-5">
+                            <label class="form-label" for="sort">Bulan</label>
+                            <select class="form-control select2-selection__arrow" name="month" id="sort"                 
+                            >
+                                <option disabled selected value> -- Pilih Bulan -- </option> 
+                                <option value="01">Januari</option>
+                                <option value="02">Februari</option>
+                                <option value="03">Maret</option>
+                                <option value="04">April</option>
+                                <option value="05">Mei</option>
+                                <option value="06">Juni</option>
+                                <option value="07">Juli</option>
+                                <option value="08">Agustus</option>
+                                <option value="09">September</option>
+                                <option value="10">Oktober</option>
+                                <option value="11">November</option>
+                                <option value="12">Desember</option>
+                                
+                            </select>
+                        </div> 
+                        <div class="form-group col-2 mt-auto">
+                            <input class="btn btn-success mt-4 w-100" type="submit" value="Submit">
+                        </div>
+                    </div>
+                </div>     
+            </form>
+     
+        
+        </div>
+    </div>
+    <button id="export-xls" class="btn btn-success mt-3">Export Excel (.xlsx) </button>
+    <div class="table-responsive">
+        <table id="export-ready-table" class="table-sm table table-hover bg-light table-bordered mt-3 ">
+            <thead class=" table-primary table-borderless text-nowrap">
+                <tr class="text-center">
+                    <th colspan="8" class="p-3 bg-light" 
+                    data-f-sz="18"
+                    data-a-h="center"
+                    data-a-v="middle"
+                    data-f-underline="true">
+
+                        {{info_message}}
+                    </th>
+                </tr>
+                <tr class="text-center">
+
+                        <th rowspan="2" data-a-h="center"
+                    data-a-v="middle" data-fill-color="65b1f0">No</th>
+                        <th rowspan="2" data-a-h="center"
+                    data-a-v="middle" data-fill-color="65b1f0">Nama</th>
+                        <th rowspan="2" data-a-h="center"
+                    data-a-v="middle" data-fill-color="65b1f0">Email</th>
+                        <th rowspan="2" data-a-h="center"
+                    data-a-v="middle" data-fill-color="65b1f0">Alamat</th>
+                        <th rowspan="2" data-a-h="center"
+                    data-a-v="middle" data-fill-color="65b1f0">Jenis Kelamin</th>
+                        <th rowspan="2" data-a-h="center"
+                    data-a-v="middle" data-fill-color="65b1f0">Nomor HP</th>
+                        <th rowspan="2" data-a-h="center"
+                    data-a-v="middle" data-fill-color="65b1f0">Keperluan</th>
+                        <th rowspan="2" data-a-h="center"
+                    data-a-v="middle" data-fill-color="65b1f0">Waktu Datang</th>
+
+                    
+                </tr>
+                
+            </thead>
+               
+            </thead>
+            <tbody class="table-table-group-divider">
+                <tr></tr>
+                {% if guest_list.count != 0 %}
+                    {% for data in guest_list %}
+                    <tr>
+                        <td>
+                            {{forloop.counter}}
+                        </td>
+                        <td>
+                            {{data.name}}
+                        </td>
+                        <td data-a-h="center">
+                            {% if data.email == None %}
+                            -
+                            {% else %}
+                            {{data.email}}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {{data.address}}
+                        </td>
+                        <td>{{data.get_gender_display}}</td>
+                        <td>{{data.phone}}</td>
+                        <td>{{data.needs}}</td>
+                        <td>{{data.reserve_time}}</td>
+                    </tr>
+                    {% endfor %}
+                {% endif %}
+                
+                
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+   
+</script>
+
+
+{% endblock content %}

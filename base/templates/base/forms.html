@@ -4,17 +4,25 @@
 
 {% block content %}
 
-<div class="container col-8 mt-3">
-    <form action="" method="post">
-        {% csrf_token %}
-        {% crispy form%}
-        <br>
-    </form>
-    {% if messages %}
-    {% for message in messages %}
-      <p class="text-danger">{{message}}</p>
-    {% endfor %}
-    {% endif %}
+<div class="container-fluid">
+  <div class="card card-primary">
+    <div class="card-header">
+      <h3>Form Tamu Baru</h3>
+    </div>
+    <div class="card-body">
+
+      <form action="" method="post">
+          {% csrf_token %}
+          {% crispy form%}
+          <br>
+      </form>
+      {% if messages %}
+      {% for message in messages %}
+        <p class="text-danger">{{message}}</p>
+      {% endfor %}
+      {% endif %}
+    </div>
+  </div>
     
 </div>
 

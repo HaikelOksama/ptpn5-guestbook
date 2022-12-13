@@ -1,7 +1,14 @@
 from django.urls import path
 from . import views
+from django.contrib import admin
+from django.urls import path
 
 urlpatterns = [
+    
+    path("login/", views.login_view, name="login"),
+   
+    path("logout/", views.logout_user, name="logout"),
+    
     path('', views.home_view, name='home'),
     path('home/', views.home_view, name='home'),
     path('guest-list/', views.guest_list_view, name='guest-list'),
@@ -13,5 +20,9 @@ urlpatterns = [
     
     path('statistic/', views.statistic_view, name='statistic'),
 
+    path('export/', views.export_view, name='export'),
+    path('export/<int:year_par>/', views.export_view, name='export-year'),
+    path('export/<int:year_par>/<int:month_par>/', views.export_view, name='export-month'),
+    
 ]
 

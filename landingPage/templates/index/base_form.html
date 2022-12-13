@@ -1,0 +1,23 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<div class="col-lg-7 col-md-12 mt-3">
+    <h2>Form Data Tamu Kantor Pusat</h2>
+    <hr>
+    <p>Silahkan isi form berikut sebelum melanjutkan</p>
+    <div class="container guest-form">
+        <form action="" method="post">
+            {% csrf_token %}
+            {% crispy form%}
+            <br>
+        </form>
+    </div>
+    <p class="text-success border-top border-5 border-success">*Kami hanya akan menggunakan data anda untuk kepentingan perusahaan dan tidak akan menyebar data anda kepada pihak yang tidak berkepentingan!</p>
+    {% if messages %}
+    {% for message in messages %}
+      <p class="text-danger">{{message}}</p>
+    {% endfor %}
+    {% endif %}			
+</div>
+
+{% endblock content %}

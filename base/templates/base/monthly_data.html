@@ -5,11 +5,10 @@
 {% block content %}
 
 {% comment %} onchange="this.form.submit()" {% endcomment %}
-<div class=" container mt-3">
-    
-    <div class="card mb-3">
+<div class="container-fluid mt-3">
+
+    <div class="card card-primary card-outline">
         <div class="card-body">
-        <h4 class="card-title">Data Tamu Bulanan</h4>
         <form action="" method="get" id='month-form'>
             <div class="row-cols-md-auto">            
                 {% comment %} <div class="form-group mb-3">
@@ -20,15 +19,13 @@
                         <label class="form-label" for="monthly-input">Cari Data Pada Bulan</label>
                         <input required value="{{request.GET.month}}" class="form-control col" min="{{min}}" max="{{max}}" 
                         type="month" name="month" id="monthly-input" 
-                        hx-get="{% url 'monthly-data' %}" hx-trigger="input delay:200ms"
-                        hx-include="#sort" hx-target="#data-obj" hx-swap="innerHTML"
+                        
                         />
                     </div>
                     <div class="form-group col-5">
                         <label class="form-label" for="sort">Sort</label>
                         <select class="form-control select2-selection__arrow" name="sort" id="sort"
-                        hx-get="{% url 'monthly-data' %}" hx-trigger="input delay:200ms"
-                        hx-include="#monthly-input" hx-target="#data-obj" hx-swap="innerHTML"
+                       
                         >
                             
                             {% if request.GET.sort == 'latest' %}
@@ -68,11 +65,25 @@
         </form>
         </div>
     </div>
-    <div class="card">
+    <div class="card card-outline card-primary">
+        <div class="card-header">
+            <a href="
+            {% if "month" in request.GET %}
+                {% url 'export-month' date.year date.month %}
+            {% else %}
+                {% url 'export' %}
+            {% endif %}
+            "><button class=" m-3 btn btn-success">Excel (.xlsx) </button></a>
+            
+        </div>
         {% include 'base/components/guest-table.html' %}
     </div>
     
     
 </div>
+
+<script>
+   
+</script>
 
 {% endblock content %}

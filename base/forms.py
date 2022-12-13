@@ -19,31 +19,43 @@ class GuestForms(ModelForm):
     class Meta:
         get_datetime = datetime.datetime.now()
         stripped_time = get_datetime.strftime('%Y-%m-%dT%H:%M')
+        # stripped_time = None
         model = Guest
         fields = '__all__'
         exclude = ['created']
         widgets = {
             'name': forms.TextInput(attrs={
-                'placeholder': 'Masukkan Nama Anda'
+                'placeholder': 'Masukkan Nama Anda',
+                'class': 'form-control',
+                }),
+            'gender': forms.Select(attrs={
+                'placeholder': 'Masukkan Nama Anda',
+                'class': 'form-control',
                 }),
             'email': forms.EmailInput(attrs={
-                'placeholder': 'Alamat Email Anda'
+                'placeholder': 'Alamat Email Anda',
+                'class': 'form-control',
                 }),
-            'address': forms.Textarea(attrs={
-               'placeholder': 'Alamat Tempat Tinggal Anda' 
+            'address': forms.TextInput(attrs={
+               'placeholder': 'Alamat Tempat Tinggal Anda' ,
+               'class': 'form-control',
             }),
             'reserve_time' : forms.DateTimeInput(attrs={
+                'class': 'form-control',
                 'type':'datetime-local', 'min': stripped_time
                 }),
             'phone' : forms.TextInput(attrs={
+                'class': 'form-control',
                 'type' : 'number','placeholder': 'Berisi angka < 15 Digit'
                 }),
-            'needs': forms.Textarea(attrs={
+            'needs': forms.TextInput(attrs={
+                'class': 'form-control',
                 'placeholder': 'Jelaskan Keperluan Anda'
                 }),
         }
         labels = {
             'name': "Nama",
+            'gender': "Jenis Kelamin",
             'email': "E-mail (opsional)",
             'address': "Alamat",
             'needs': "Keperluan",

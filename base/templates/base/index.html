@@ -1,50 +1,46 @@
 {% extends 'base.html' %}
 
-{% block titile %}
+{% block title %}
 Dashboard
-{% endblock titile %}
+{% endblock title %}
 
 {% block content %}
+
+<style>
+    .information .card {
+        height: 120px;
+    }
+</style>
+
 <div class="container-fluid px-4">
-    <h1 class="mt-4">Dashboard</h1>
-    <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item active">Dashboard</li>
-    </ol>
-    <div class="row">
+    <div class="row information">
         <div class="col-xl-3 col-md-6">
             <div class="card bg-primary text-white mb-4">
-                <div class="card-body">Primary Card</div>
-                <div class="card-footer d-flex align-items-center justify-content-between">
-                    <a class="small text-white stretched-link" href="#">View Details</a>
-                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                </div>
+                <div class="card-body">Total Pengunjung Keseluruhan</div>
+                <div clas="card-body"><h2 class="ps-3">{{allGuestCount}}</h2></div>
+               
             </div>
         </div>
         <div class="col-xl-3 col-md-6">
-            <div class="card bg-warning text-white mb-4">
-                <div class="card-body">Warning Card</div>
-                <div class="card-footer d-flex align-items-center justify-content-between">
-                    <a class="small text-white stretched-link" href="#">View Details</a>
-                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                </div>
+            <div class="card bg-dark text-white mb-4">
+                <div class="card-body">Pengunjung Hari Ini</div>
+                <div clas="card-body"><h2 class="ps-3">{{todayGuest}}</h2></div>
+              
             </div>
         </div>
         <div class="col-xl-3 col-md-6">
             <div class="card bg-success text-white mb-4">
-                <div class="card-body">Success Card</div>
-                <div class="card-footer d-flex align-items-center justify-content-between">
-                    <a class="small text-white stretched-link" href="#">View Details</a>
-                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                </div>
+                <div class="card-body">Total Pengunjung Bulan {{actualMonth}} {{year}}</div>
+                
+                <div clas="card-body"><h2 class="ps-3">{{thisMonthGuest}}</h2></div>
+           
             </div>
         </div>
         <div class="col-xl-3 col-md-6">
             <div class="card bg-danger text-white mb-4">
-                <div class="card-body">Danger Card</div>
-                <div class="card-footer d-flex align-items-center justify-content-between">
-                    <a class="small text-white stretched-link" href="#">View Details</a>
-                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                </div>
+                <div class="card-body">Total Pengunjung Tahun {{year}}</div>
+                <div clas="card-body"><h2 class="ps-3">{{thisYearGuest}}</h2></div>
+            
             </div>
         </div>
     </div>
@@ -62,7 +58,7 @@ Dashboard
             <div class="card mb-4">
                 <div class="card-header">
                     <i class="fas fa-chart-area me-1"></i>
-                    Pengunjung Harian Bulan {{thisMonth}} Tahun {{year}}
+                    Pengunjung Harian Bulan {{actualMonth}} Tahun {{year}}
                 </div>
                 <div class="card-body"><canvas id="dailyChart" width="100%" height="40"></canvas></div>
             </div>
@@ -71,10 +67,10 @@ Dashboard
     <div class="card mb-4">
         <div class="card-header">
             <i class="fas fa-table me-1"></i>
-            DataTable Example
+            List Pengunjung
         </div>
         <div class="card-body">
-            <table id="datatablesSimple" class="table table-hover border table-bordered">
+            <table id="monthlyDataTables" data-toggle="table" class="table table-hover border table-bordered">
                 <thead class="thead bg-secondary text-light">
                     <tr>
                         <th>#</th>
@@ -102,16 +98,6 @@ Dashboard
                     </tr>
                    
                 </tbody>
-                <tfoot>
-                    <tr>
-                        <th>Name</th>
-                        <th>Position</th>
-                        <th>Office</th>
-                        <th>Age</th>
-                        <th>Start date</th>
-                        <th>Salary</th>
-                    </tr>
-                </tfoot>
 
             </table>
         </div>

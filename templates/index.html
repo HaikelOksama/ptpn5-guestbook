@@ -1,0 +1,70 @@
+{% load static %}
+{% load crispy_forms_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PTPN V Guest Book| {%block title%} {% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    
+    <script src="https://unpkg.com/htmx.org@1.8.0"></script>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
+     <!--Chart js-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" integrity="sha256-Uv9BNBucvCPipKQ2NS9wYpJmi8DTOEfTA/nH2aoJALw=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.css" integrity="sha256-aa0xaJgmK/X74WM224KMQeNQC2xYKwlAt08oZqjeF0E=" crossorigin="anonymous" />
+    <!-- jQuery -->
+    <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.20.2/dist/bootstrap-table.min.css">
+</head>
+<body class="landingPage">
+    
+    <main class="pt-5">
+
+
+
+		<div class="container col-lg-8 input-guest">
+			<div class="row align-items-lg-center flex-wrap">
+				<div class="col-lg-5 p-5 overflow-hidden d-flex justify-content-center align-content-center">
+					<img src="{% static 'image/ptpn.png' %}" class="img-fluid" alt="">
+				</div>
+				{% if messages %}
+					<div class="col-lg-7 col-md-12 mt-3">
+						<h3>Terimakasih telah mengisi data tamu..</h3>
+						<h3>Silahkan melapor ke petugas bagian tamu</h3>
+					</div>
+				{% else %}
+					<div class="col-lg-7 col-md-12 mt-3">
+						<h2>Form Data Tamu Kantor Pusat</h2>
+						<hr>
+						<p>Silahkan isi form berikut sebelum melanjutkan</p>
+						<div class="container guest-form">
+							<form action="" method="post">
+								{% csrf_token %}
+								{% crispy form%}
+								<br>
+							</form>
+						</div>
+						<p class="text-success border-top border-5 border-success">*Kami hanya akan menggunakan data anda untuk kepentingan perusahaan dan tidak akan menyebar data anda kepada pihak yang tidak berkepentingan!</p>
+						{% if messages %}
+						{% for message in messages %}
+						  <p class="text-danger">{{message}}</p>
+						{% endfor %}
+						{% endif %}			
+					</div>
+				{% endif %}
+				
+				
+			</div>
+		</div>
+		
+    </main>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+
+</body>
+</html>

@@ -1,137 +1,173 @@
 {% load static %}
-
-<div class="card-body"  id="data-obj">
-    <h4><i class="fas fa-table me-1"></i>{{info_message}}</h4>
-    <table class="mt-1 table table-hover border table-bordered" >       
-        <thead class="thead bg-secondary text-light">
-            <tr>
-                <th scope='col'>
-                    #
-                </th>
-                <th scope='col'>
-                    id
-                </th>
-                <th scope='col'>
-                    Nama
-                </th>
-                <th scope='col'>
-                    Email
-                </th>
-                <th scope='col'>
-                    Alamat
-                </th>
-                <th scope='col'>
-                    Hp
-                </th>
-                <th scope='col'>
-                    Keperluan
-                </th>
-                <th scope='col'>
-                    Jadwal Datang
-                </th>
-                <th scope='col'>
-                    Aksi
-                </th>
-            </tr>
-        </thead>
-        
-        <tbody hx-confirm="Are you sure?" hx-target="#data-obj" hx-swap="outerHTML swap:1s">     
-            {% for obj in guest_list %}
-            <tr>
-                <th scope='row'>{{forloop.counter}}</th>
-                <td>{{obj.id}}</td>
-                <td>{{obj.name}}</td>
-                <td>{{obj.email}}</td>
-                <td>{{obj.address}}</td>
-                <td>{{obj.phone}}</td>
-                <td>{{obj.needs}}</td>
-                <td>{{obj.reserve_time|date:"l, d F Y, H:i"}}</td>
-                <td>
-                    <div class="row-cols-2">
-                    <form action="" hx-post='' id="deleteForm">
-                        {% csrf_token %}
-                        <input type="hidden" name="delete" value="{{obj.id}}">
-                        <button type="submit" class="btn btn-danger btn-sm" id='deleteBtn'>Hapus</button>
-                    </form>
-                </div>
-                </td>
-            </tr>
-            {%empty%}
-            <th class="alert alert-info m-3" role="alert">No Data</th>
+<script>
+    
+          {% if messages %}
+            {% for message in messages %}
+                var Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000
+                });
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    Toast.fire({
+                    icon: 'error',
+                    title: '{{message}}'
+                    })
+                {% else %}
+                    Toast.fire({
+                    icon: 'success',
+                    title: '{{message}}'
+                    })
+                {% endif %}
             {% endfor %}
-            <tr class="table-group-divider">
-                <th colspan=6 scope='row'>Total</th>
-                <td>{{guest_list.count}}</td>
-            </tr>
-        </tbody>      
-    </table>
+        {% endif %}
+   
+</script>
 
-    <div class="card">
+
+    <div class="card-body"  id="data-obj">
         <div class="card-header">
-            <i class="fas fa-chart-area me-1"></i>
-            Statistik Pengunjung Harian Bulan {{date.month}}
+    
+            <h4><i class="fas fa-table me-1"></i> {{info_message}}</h4>
         </div>
-        <div class="card-body"><canvas id="dailyChart" width="100%" height="40"></canvas></div>
-    </div>
-    <script>
-        var ctd = document.getElementById("dailyChart");
-        var myLineChart = new Chart(ctd, {
-        type: 'line',
-        data: {
-            labels: [
-                {% for x in dayKey %}
-                '{{x}}',
+        <table class="mt-1 table table-hover border table-bordered" data-toggle="table" id="monthlyDataTables">       
+            <thead class="thead bg-secondary text-light">
+                <tr>
+                    <th scope='col'>
+                        #
+                    </th>
+                    <th scope='col'>
+                        id
+                    </th>
+                    <th scope='col'>
+                        Nama
+                    </th>
+                    <th scope='col'>
+                        Email
+                    </th>
+                    <th scope='col'>
+                        Alamat
+                    </th>
+                    <th scope='col'>
+                        Hp
+                    </th>
+                    <th scope='col'>
+                        Keperluan
+                    </th>
+                    <th scope='col'>
+                        Jadwal Datang
+                    </th>
+                    <th scope='col'>
+                        Aksi
+                    </th>
+                </tr>
+            </thead>
+            
+            <tbody hx-confirm="Are you sure?" hx-target="#data-obj" hx-swap="outerHTML swap:1s">     
+                {% for obj in guest_list %}
+                <tr>
+                    <th scope='row'>{{forloop.counter}}</th>
+                    <td>{{obj.id}}</td>
+                    <td>{{obj.name}}</td>
+                    <td>{{obj.email}}</td>
+                    <td>{{obj.address}}</td>
+                    <td>{{obj.phone}}</td>
+                    <td>{{obj.needs}}</td>
+                    <td>{{obj.reserve_time|date:"l, d F Y, H:i"}}</td>
+                    <td>
+                        <div class="row-cols-2">
+                        <form action="" hx-post='' id="deleteForm">
+                            {% csrf_token %}
+                            <input type="hidden" name="delete" value="{{obj.id}}">
+                            <button type="submit" class="btn btn-danger btn-sm" id='deleteBtn'>Hapus</button>
+                        </form>
+                    </div>
+                    </td>
+                </tr>
+                {%empty%}
+                <th class="alert alert-info m-3" role="alert">No Data</th>
                 {% endfor %}
-            ],
-            datasets: [{
-            label: "Pengunjung",
-            lineTension: 0.3,
-            backgroundColor: "rgba(2,117,216,0.2)",
-            borderColor: "rgba(2,117,216,1)",
-            pointRadius: 5,
-            pointBackgroundColor: "rgba(2,117,216,1)",
-            pointBorderColor: "rgba(255,255,255,0.8)",
-            pointHoverRadius: 5,
-            pointHoverBackgroundColor: "rgba(2,117,216,1)",
-            pointHitRadius: 50,
-            pointBorderWidth: 2,
-            data: [
-                {% for x in dayData %}
-                {{x}} ,
-                {% endfor %}
-            ],
-            }],
-        },
-        options: {
-            scales: {
-            xAxes: [{
-                time: {
-                unit: 'date'
-                },
-                gridLines: {
-                display: false
-                },
-                ticks: {
-                maxTicksLimit: 7
-                }
-            }],
-            yAxes: [{
-                ticks: {
-                min: 0,
-                maxTicksLimit: 5
-                },
-                gridLines: {
-                color: "rgba(0, 0, 0, .125)",
-                }
-            }],
+                <tr class="table-group-divider">
+                    <th colspan=6 scope='row'>Total</th>
+                    <td>{{guest_list.count}}</td>
+                </tr>
+            </tbody>      
+        </table>
+    
+    
+        {% if not all %}
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-chart-area me-1"></i>
+                Statistik Pengunjung Harian Bulan {{date.month}}
+            </div>
+            <div class="card-body"><canvas id="dailyChart" width="100%" height="40"></canvas></div>
+        </div>
+        <script>
+            var ctd = document.getElementById("dailyChart");
+            var myLineChart = new Chart(ctd, {
+            type: 'line',
+            data: {
+                labels: [
+                    {% for x in dayKey %}
+                    '{{x}}',
+                    {% endfor %}
+                ],
+                datasets: [{
+                label: "Pengunjung",
+                lineTension: 0.3,
+                backgroundColor: "rgba(2,117,216,0.2)",
+                borderColor: "rgba(2,117,216,1)",
+                pointRadius: 5,
+                pointBackgroundColor: "rgba(2,117,216,1)",
+                pointBorderColor: "rgba(255,255,255,0.8)",
+                pointHoverRadius: 5,
+                pointHoverBackgroundColor: "rgba(2,117,216,1)",
+                pointHitRadius: 50,
+                pointBorderWidth: 2,
+                data: [
+                    {% for x in dayData %}
+                    {{x}} ,
+                    {% endfor %}
+                ],
+                }],
             },
-            legend: {
-                display: false
+            options: {
+                scales: {
+                xAxes: [{
+                    time: {
+                    unit: 'date'
+                    },
+                    gridLines: {
+                    display: false
+                    },
+                    ticks: {
+                    maxTicksLimit: 7
+                    }
+                }],
+                yAxes: [{
+                    ticks: {
+                    min: 0,
+                    maxTicksLimit: 5
+                    },
+                    gridLines: {
+                    color: "rgba(0, 0, 0, .125)",
+                    }
+                }],
+                },
+                legend: {
+                    display: false
+                    }
                 }
-            }
-            });
+                });
+    
+                
+                
+    
+        </script>
+        </div>
 
-    </script>
-</div>
+    {% endif %}
 
 
