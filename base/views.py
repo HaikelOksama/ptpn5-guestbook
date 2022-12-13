@@ -287,7 +287,6 @@ def data_by_month(request):
     
     return render(request,'base/monthly_data.html', context)
   
-  
 @login_required(login_url='login')
 def export_view(request, month_par = None, year_par = None):
     page = "Export Data"
@@ -306,7 +305,15 @@ def export_view(request, month_par = None, year_par = None):
     #     except:
     #         data = Guest.objects.none()
     
-    
+    date1 = request.GET.get('date1') if request.GET.get('date1') != None else ''
+    date2 = request.GET.get('date2') if request.GET.get('date2') != None else ''
+    if date1 and date2:
+        data = data.filter(reserve_time__range=[date1, date2])
+        name1 = datetime.strptime(date1, "%Y-%m-%d")
+        name2 = datetime.strptime(date2, "%Y-%m-%d")
+        name1 = name1.strftime("%d %B %Y")
+        name2 = name2.strftime("%d %B %Y")
+        message = f'Data Tamu Kantor Pusat PTPN V Dari {name1} hingga {name2}'
             
     obj_year = []
     obj_month = []
@@ -487,22 +494,40 @@ def delete_guest_view(request, pk):
     return HttpResponse('Success')
 
 @login_required(login_url='login')
-def new_guest_view(request):
-    form = GuestForms()
-    if request.method == 'POST':
-        form = GuestForms(request.POST)
-        if form.is_valid():
-            instance = form.save(commit=False)
-
-            instance.save()
-            messages.success(request, f'{instance.name} Berhasil ditambahkan')
-            return redirect('home')
+def new_guest_view(request, pk=None):
+    if pk != None:
+        page = 'edit'
+        guest = Guest.objects.get(id=pk)
+        form = GuestForms(instance=guest)
+        if request.method == 'POST':
+            form = GuestForms(request.POST, instance=guest)
+            if form.is_valid():
+                instance = form.save(commit=False)
+                instance.save()
+                messages.success(request, f'{instance.name} Telah dirubah')
+                return redirect('home')
     
+    else: 
+        form = GuestForms()
+        guest = Guest.objects.none()
+        page = 'new'
+        if request.method == 'POST':
+            form = GuestForms(request.POST)
+            if form.is_valid():
+                instance = form.save(commit=False)
+
+                instance.save()
+                messages.success(request, f'{instance.name} Berhasil ditambahkan')
+                return redirect('home')
+        
     context = {
         'form' : form,
+        'obj' : guest,
+        'page' : page
     }    
     
     return render(request, 'base/forms.html', context)
+
 @login_required(login_url='login')   
 def statistic_view(request):
     page = "Statistik"

@@ -13,7 +13,11 @@
 
       <form action="" method="post">
           {% csrf_token %}
+          {% if page == new %}
           {% crispy form%}
+          {% else %}
+          {% crispy form%}
+          {% endif %}
           <br>
       </form>
       {% if messages %}
@@ -28,3 +32,12 @@
 
 
 {% endblock content %}
+{% block moment %}
+<script>
+
+    {% comment %} date = document.getElementById("id_reserve_time")
+    date.value = '{{obj.reserve_time|date:"Y-m-d H:i:s"}}'
+    console.log( date.value = '{{obj.reserve_time|date:"Y-m-d H:i:s"}}') {% endcomment %}
+
+</script>
+{% endblock moment %}

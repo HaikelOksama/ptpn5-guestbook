@@ -16,6 +16,8 @@ urlpatterns = [
     path('monthly/', views.monthly_data_view, name='monthly-data'),
     
     path('new-guest/', views.new_guest_view, name='create'),
+    path('guest/<int:pk>/', views.new_guest_view, name='edit'),
+    
     path('delete/<int:pk>', views.delete_guest_view, name='delete'),
     
     path('statistic/', views.statistic_view, name='statistic'),

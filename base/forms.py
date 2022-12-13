@@ -42,7 +42,8 @@ class GuestForms(ModelForm):
             }),
             'reserve_time' : forms.DateTimeInput(attrs={
                 'class': 'form-control',
-                'type':'datetime-local', 'min': stripped_time
+                'type':'datetime-local',
+                
                 }),
             'phone' : forms.TextInput(attrs={
                 'class': 'form-control',

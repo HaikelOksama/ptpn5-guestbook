@@ -23,6 +23,9 @@ class Guest(models.Model):
     def get_date(self):
         return str(datetime.strptime(self.reserve_time, '%d-%m-%Y %H:%M:%S'))
     
+    def html_date(self):
+        return str(datetime.strptime(self.reserve_time, '%Y-%m-%d %H:%M:%S'))
+    
     def get_year(self):
         return str(datetime.strftime(self.reserve_time, "%Y"))
     
