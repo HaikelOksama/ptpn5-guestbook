@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'crispy_forms',
     "crispy_bootstrap5",
     'django_htmx',
+    
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -133,11 +135,19 @@ STATIC_URL = '/static/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# STATICFILES_DIRS = (
-#     os.path.join(BASE_DIR, 'static'),
-# )
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# https://bukutamuptpnv.sgp1.digitaloceanspaces.com
+AWS_ACCESS_KEY_ID = 'DO00BQ3HFJ4ZVGQM7QDB'
+AWS_SECRET_ACCESS_KEY = 'hZ6PDwez1P+7nUgAV7FhD60uyrD9D4Cli5CFfxp90Bs'
+AWS_STORAGE_BUCKET_NAME = 'bukutamuptpnv'
+AWS_S3_ENDPOINT_URL = 'https://sgp1.digitaloceanspaces.com'
+AWS_LOCATION = 'https://bukutamuptpnv.sgp1.digitaloceanspaces.com'
+STATICFILES_STORAGE = 'reservation.cdn.backends.StaticRootS3Boto3Storage'
