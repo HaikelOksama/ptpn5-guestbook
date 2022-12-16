@@ -493,6 +493,26 @@ def delete_guest_view(request, pk):
         print(request.htmx)
     return HttpResponse('Success')
 
+def guest_view(request):
+    done = False   
+    form = GuestForms()
+    if request.method == 'POST':
+        form = GuestForms(request.POST)
+        if form.is_valid():
+            instance = form.save(commit=False)
+
+            instance.save()
+            print(instance.name)
+            messages.success(request, f'{instance.name} Telah Berhasil Ditambahkan')
+  
+            return redirect('guest')
+    context = {
+        'form' : form,
+        'success' : done
+    }    
+    
+    return render(request, 'index.html', context)
+
 @login_required(login_url='login')
 def new_guest_view(request, pk=None):
     if pk != None:
