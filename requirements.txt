@@ -4,3 +4,4 @@ crispy-bootstrap5
 django-htmx
 iteration_utilities
 gunicorn==20.1.0
+whitenoise
